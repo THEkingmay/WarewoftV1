@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entername</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="pic/LOGO.png" type="image/x-icon">
+
+    <style>
+        a{
+            text-decoration: none;
+        }
+        ul{ 
+            list-style-type: none;
+            margin: 0;
+        }
+        ul li {
+            background-color: #5a5a5a;
+            border-radius: 10px;
+            margin: 10px 10px;
+            display: inline-block; 
+            width: auto; 
+            line-height: 50px; 
+            font-size: 15px;
+            padding: 0 10px;
+        }
+        #nextbt{
+            display: none;
+            background-color: #61ffa6;
+            color: #000000;
+        }
+        #nextbt:hover{
+            background-color: #1aa958;
+        }
+        #deletebt{
+            margin-top: 50px;
+            background-color: #ffae45;
+            color: #000000;
+            font-size: 20px;
+            width: 100px;
+        }
+        #deletebt:hover{
+            background-color: #e07f00;
+        }
+        #BACKbt{
+            font-size: 20px;
+            width: 100px;
+            background-color: #ba00aa;
+            color: #000000;
+        }
+        #BACKbt:hover{
+            background-color: #7b0071;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" id="entername">
+        <div><h1>WAREWOLF</h1></div>
+        <div class="item" id="textname"></div>
+        <input class="item" id="inputname" type="text" placeholder="Enter name">
+        <button class="item" id="enternamebt" onclick="entername()">OK</button>
+        <a id="link_nextbt"><button class="item" id="nextbt" onclick="savetolocal()">NEXT</button></a>
+        <div id="playername">
+           
+        </div>
+        <button class="item" id="deletebt" onclick="deletename()" >DELETE</button>
+        <a href="index.html"><button class="item" id="BACKbt">BACK</button></a>
+    </div>
+    <script>
+        let number = localStorage.getItem('playersnum');
+        let textnameDOM=document.getElementById('textname');
+        textnameDOM.innerText='Enter name ('+number+') people';
+        let inputnameDOM=document.getElementById('inputname')
+        let playernameDOM=document.getElementById('playername');
+        let count=1;
+        let name=[]; ////************************* Key สำคัญที่ทำให้การย้อนกลับมา page นี้แล้วกรอกชื่อใหม่ได้ ทำให้ไม่ซ้ำกับชื่อเก่า ( reset localstorage !!! )
+        function entername(){
+            if(inputnameDOM.value!==''&&count<=number){
+                name.push(inputnameDOM.value)
+                count++;
+                let contentHTML='<ul>';
+                for(i=0;i<name.length;i++){
+                    contentHTML+='<li>'+(i+1)+'.'+name[i]+'</li>'
+                }
+                contentHTML+='</ul>';
+                playernameDOM.innerHTML=contentHTML;
+                inputnameDOM.value=''
+            }
+            check();
+        }
+        function check(){  //เช็คว่ากรอกชื่อครบหรือยัง
+            let enternamebtDOM=document.getElementById('enternamebt')
+            let nextbtDOM=document.getElementById('nextbt')
+            let editbtDOM=document.getElementById('editbt')
+            let BACKbtDOM=document.getElementById('BACKbt')    
+            if(count>number){
+                enternamebtDOM.style.display='none'
+                nextbtDOM.style.display='block'
+            }else{
+                enternamebtDOM.style.display='block'
+                nextbtDOM.style.display='none'
+            }
+            
+        }
+        function savetolocal(){  //เอาชื่อเก็บไว้ใน localstorage
+            let nameAsString = JSON.stringify(name);
+            localStorage.setItem('playernames_array', nameAsString);
+
+            let link_nextbtDOM=document.getElementById('link_nextbt');
+            link_nextbtDOM.setAttribute('href','role.html')
+
+        }
+        function deletename(){
+            count--;
+            name.pop();
+            let contentHTML='<ul>';
+                for(i=0;i<name.length;i++){
+                    contentHTML+='<li>'+(i+1)+'.'+name[i]+'</li>'
+                }
+                contentHTML+='</ul>';
+                playernameDOM.innerHTML=contentHTML;
+                check();
+        }
+    </script>
+</body>
+</html>
+

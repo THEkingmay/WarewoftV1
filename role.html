@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select role</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="pic/LOGO.png" type="image/x-icon">
+
+    <style>
+        .header{
+            width: 100vw;
+            height: auto;
+            margin-top: 100px;
+        }
+        .role{
+            font-size: 20px;
+            color: #000;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 250px;
+            margin: 10PX;
+            padding: 20PX;
+            border-radius: 10px;
+        }
+        .role button{
+            margin-top: 10px;
+        }
+        .role div{
+            display: flex;
+        }
+        .role img{
+            width: 150px;
+            height: 110px;
+        }
+        .container{
+            display: flex;
+            flex-wrap: wrap; /* Ensure content wraps to new line if it exceeds container width */
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto; 
+       }
+       #play button{
+            background-color: aliceblue;
+            color: #000;
+            margin: 10px;
+        }
+    </style>
+<body>
+    <div class="header">
+        <h1 id="texthead">Select role</h1>   
+        <div class="container">  
+            <div class="role" id="wolf">
+                <div><h2>หมาป่า</h2><h2 class="text">(0)</h2></div>
+                <img src="pic/wolf.png">
+                <button class="add">Add +1</button>
+                <button class="delete">Delete -1</button>
+            </div>
+            <div class="role" id="bodyguard">
+                <div><h2>บอดี้การ์ด</h2><h2 class="text">(0)</h2></div>
+                <img src="pic/บอดี้การ์ด.PNG">
+                <button class="add">Add +1</button>
+                <button class="delete">Delete -1</button>
+            </div>
+            <div class="role" id="seer">
+                <div><h2>นักพยากรณ์</h2><h2 class="text">(0)</h2></div>
+                <img src="pic/เซียร์.png">
+                <button class="add">Add +1</button>
+                <button class="delete">Delete -1</button>
+            </div>
+            <div class="role" id="villeger">
+                <div><h2>ชาวบ้าน</h2><h2 class="text">(0)</h2></div>
+                <img src="pic/Villager.png">
+                <button class="add">Add +1</button>
+                <button class="delete">Delete -1</button>
+            </div>
+        </div>
+        <a id="play"><button onclick="play()">PLAY</button></a>
+    </div>
+    <script>
+        let number = localStorage.getItem('playersnum');
+        let textDOM = document.getElementById('texthead');
+        textDOM.innerText = 'Select role ('+number+')';
+
+        let villeger=0,wolf=0,bodyguard=0,seer=0
+        let count=0;
+
+        const addbt=document.querySelectorAll('.add')
+        addbt.forEach(function(bt){
+            bt.addEventListener('click',function(){
+                if(count<number){
+                    if(this.parentNode.id=='wolf'){
+                        count++;
+                        wolf++;
+                        this.parentNode.querySelector('.text').innerText = '(' + wolf + ')';
+                    }else if(this.parentNode.id=='bodyguard'){
+                        count++;
+                        bodyguard++;
+                        this.parentNode.querySelector('.text').innerText = '(' + bodyguard + ')';
+                    }else if(this.parentNode.id=='seer'){
+                        count++;
+                        seer++;
+                        this.parentNode.querySelector('.text').innerText = '(' + seer + ')';
+                    }else if(this.parentNode.id=='villeger'){
+                        count++;
+                        villeger++;
+                        this.parentNode.querySelector('.text').innerText = '(' + villeger + ')';
+                    }
+                }else{
+                    alert('FUCK YOU')
+                }
+            })
+        })
+
+        const deletebt=document.querySelectorAll('.delete')
+        deletebt.forEach(function(bt){
+            bt.addEventListener('click',function(){
+                if(this.parentNode.id=='wolf'){
+                        if(wolf>0){
+                            count--;
+                            wolf--;
+                        }
+                        this.parentNode.querySelector('.text').innerText = '(' + wolf + ')';
+                    }else if(this.parentNode.id=='bodyguard'){
+                        if(bodyguard>0){
+                            count--;
+                            bodyguard--;
+                        }
+                        this.parentNode.querySelector('.text').innerText = '(' + bodyguard + ')';
+                    }else if(this.parentNode.id=='seer'){
+                        if(seer>0){
+                            count--;
+                            seer--;
+                        }
+                        this.parentNode.querySelector('.text').innerText = '(' + seer + ')';
+                    }else if(this.parentNode.id=='villeger'){
+                        if(villeger>0){
+                            count--;
+                            villeger--;
+                        }
+                        this.parentNode.querySelector('.text').innerText = '(' + villeger + ')';
+                    }
+            })
+        })
+        function play(){
+            if(count==number){
+                //------------------------ หมาป่า 1 / บอดี้การ์ด 2 / เซียร์ 3 / ชาวบ้าน 4 ( ไว้ใช้ทำระบบบอกว่าผู้เล่นได้บทบาทอะไรในอนาคต )
+                let roleindex=[];
+                let j=0;
+
+                for(i=0;i<wolf;i++){
+                    roleindex[j]=1;
+                    j++;
+                }
+                for(i=0;i<bodyguard;i++){
+                    roleindex[j]=2;
+                    j++;
+                }
+                for(i=0;i<seer;i++){
+                    roleindex[j]=3;
+                    j++;
+                }
+                for(i=0;i<villeger;i++){
+                    roleindex[j]=4;
+                    j++;
+                }
+                let rolestring = JSON.stringify(roleindex);
+                localStorage.setItem('rolestring',rolestring);   
+
+                const playbt=document.getElementById('play')
+                playbt.setAttribute('href','play.html')
+            }else{
+                alert('Add more role!!')
+            }
+        }
+    </script>
+</body>
+</html>

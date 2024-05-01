@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WareWolf</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="pic/LOGO.png" type="image/x-icon">
+    <style>
+        img{
+            width: 400px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" id="header">
+        <div><img src="pic/LOGO.png"></div>
+        <div><h1>WAREWOLF</h1></div>
+        <div class="item">How many players?</div>
+        <input class="item" id="players" type="number" min="5" max="75" placeholder="5++" required>
+        <a id="submitplayers"><button class="item" onclick="playernumber()">OK</button></a>
+    </div>
+    <script>
+          let players;
+          function playernumber(){
+                players =document.getElementById('players').value 
+                if(players<5||players>75){
+                    alert("Invalid number!");
+                }else if(players!=''){
+                    localStorage.setItem('playersnum',players)
+                    let bt=document.getElementById('submitplayers')
+                    bt.setAttribute('href','entername.html')
+                }
+            }
+    </script>
+</body>
+</html

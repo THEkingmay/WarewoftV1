@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote</title>
+    <link rel="icon" href="pic/LOGO.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .header{
+            height: auto;
+        }
+        .item{
+            width: 70vw;
+            height:1px;
+            display: flex;
+            background-color: #fff;
+            padding: 50px;
+            justify-content:space-between;
+            align-items: center;
+            border: 2px solid #4b4a4a; 
+            border-radius: 10px;     
+        }h5,h4{
+            font-size: 18px;
+            color: #000;
+        }
+        .item button{
+            font-size: 20px;
+            padding: 10px;
+            width: 100px;
+            box-sizing: border-box; 
+            border: 2px solid #4b4a4a; 
+            border-radius: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>VOTE</h1>
+    </div>
+    <script>
+        const rolestringRandom =  JSON.parse(localStorage.getItem('rolestringRandom'));
+        const playername =  JSON.parse(localStorage.getItem('playernames_array'));
+        let good=localStorage.getItem('good')
+        let bad=localStorage.getItem('bad')
+        console.log(rolestringRandom)
+        console.log(playername)
+
+        for(i=0;i<playername.length;i++){
+            if(rolestringRandom[i]==1){
+                text='หมาป่า'
+            }else if(rolestringRandom[i]==2){
+                text='บอดี้การ์ด'            
+            }else if(rolestringRandom[i]==3){
+                text='เซียร์'              
+            }else if(rolestringRandom[i]==4){
+                text='ชาวบ้าน'
+            }  
+            let newdiv=document.createElement("div");
+            newdiv.setAttribute('class','item')
+            newdiv.style.backgroundColor='white'
+            let newname=document.createElement("h5")
+            newname.innerText=playername[i];
+            let textDom=document.createElement("h4")
+            textDom.innerText=text;
+            newdiv.appendChild(newname)
+            newdiv.appendChild(textDom)
+            let votebt=document.createElement('button')
+            votebt.setAttribute('class','vote')
+            votebt.innerText = "Vote";
+            newdiv.appendChild(votebt)
+            document.querySelector('.header').appendChild(newdiv)
+        }
+        
+        const voteDOM=document.querySelectorAll('.vote')
+        voteDOM.forEach(bt=>{
+            bt.addEventListener('click',function(){
+                let result=confirm('คุณแน่ใจหรือไม่ที่จะโหวต ' + bt.parentElement.querySelector('h5').innerText + '?😭 ')
+                if(result){
+                    bt.parentElement.style.display='none'
+                    if (bt.parentElement.querySelector('h4').innerText == 'หมาป่า') {
+                        bad--;check();
+                    } else if (bt.parentElement.querySelector('h4').innerText == 'บอดี้การ์ด' || 
+                            bt.parentElement.querySelector('h4').innerText == 'เซียร์' || 
+                            bt.parentElement.querySelector('h4').innerText == 'ชาวบ้าน') {
+                        good--;check();
+                    }
+                }
+            })
+        })
+        function check(){
+            if(bad==0){
+                window.location.href='villagewin.html'
+            }else if(bad>=good){
+                window.location.href='wolfwin.html'
+            }
+        }
+    </script>
+</body>
+</html>

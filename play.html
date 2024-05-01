@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play</title>
+    <link rel="icon" href="pic/LOGO.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        img{
+            width: 250px;
+            height: auto;
+        }
+        #close{
+            color: #fff;
+            background-color: #393939;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+            height: 100vh;
+        }
+        #open{
+            color: #000000;
+            background-color: #fff;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+            height: 100vh;
+        }
+        button{ 
+           font-size: 24px;
+           padding: 10px;
+           width: 200px;
+           box-sizing: border-box; 
+           border: 2px solid #4b4a4a; 
+           border-radius: 10px; 
+      }
+    </style>
+</head>
+<body>
+    <div id="close">
+        <h1 id="text1">test</h1>
+        <button class="bt">LOOK</button>
+    </div>
+    <div id="open">
+        <h1 id="text2">test</h1>
+        <img id="imgrole">
+        <a id="tovote"><button class="bt">OK</button></a>
+    </div>
+
+    <script>
+        const playername =  JSON.parse(localStorage.getItem('playernames_array'));
+        const rolestring = JSON.parse(localStorage.getItem('rolestring'))
+        let bad=0,good=0
+        console.log(rolestring)
+        for(i=0;i<playername.length;i++){  //เป็นการสุ่มตัวเลขตั้งแต่ 0 ถึง จำนวนผู้เล่น เพื่อทำการสลับและสุ่มบทบาท
+            let t=rolestring[i]
+            let b=Math.floor(Math.random() * (playername.length-1-0+1)+0) /// length ต้องลบ 1 เพราะ index
+            rolestring[i]=rolestring[b]
+            rolestring[b]=t
+        }
+
+        let playercount=0;
+        document.getElementById('text1').innerText=playername[playercount]
+        if(rolestring[playercount]==1){
+                document.getElementById('imgrole').setAttribute('src','pic/wolf.png')
+                role='หมาป่า'
+                bad++
+            }else if(rolestring[playercount]==2){
+                document.getElementById('imgrole').setAttribute('src','pic/บอดี้การ์ด.PNG')
+                role='บอดี้การ์ด'
+                good++
+            }else if(rolestring[playercount]==3){
+                document.getElementById('imgrole').setAttribute('src','pic/เซียร์.png')
+                role='เซียร์'
+                good++
+            }else if(rolestring[playercount]==4){
+                document.getElementById('imgrole').setAttribute('src','pic/Villager.png')
+                role='ชาวบ้าน'
+                good++
+            }           
+        const btDOM=document.querySelectorAll('.bt')
+        btDOM.forEach(function(bt){
+            bt.addEventListener('click',function(){
+                if(document.getElementById('open').style.display==='none'||document.getElementById('open').style.display === ''){  //ปิดอยู่แล้วกดปุ่ม look
+                    document.getElementById('text2').innerText=playername[playercount]+"เป็น"+role
+                    playercount++;
+                    document.getElementById('open').style.display='flex'
+                    document.getElementById('close').style.display='none'
+                }else{  // เปิดอยู่แล้วกดปุ่มOK
+                    if(rolestring[playercount]==1){
+                        document.getElementById('imgrole').setAttribute('src','pic/wolf.png')
+                        role='หมาป่า'
+                        bad++
+                    }else if(rolestring[playercount]==2){
+                        document.getElementById('imgrole').setAttribute('src','pic/บอดี้การ์ด.PNG')
+                        role='บอดี้การ์ด'
+                        good++
+                    }else if(rolestring[playercount]==3){
+                        document.getElementById('imgrole').setAttribute('src','pic/เซียร์.png')
+                        role='เซียร์'
+                        good++
+                    }else if(rolestring[playercount]==4){
+                        document.getElementById('imgrole').setAttribute('src','pic/Villager.png')
+                        role='ชาวบ้าน'
+                        good++
+                    }
+                    if(playercount==playername.length){
+                        let rolestringRandom = JSON.stringify(rolestring);
+                        localStorage.setItem('good',good)
+                        localStorage.setItem('bad',bad)
+                        localStorage.setItem('rolestringRandom',rolestringRandom); 
+                        document.getElementById('tovote').setAttribute('href','vote.html')
+                    }else{
+                        document.getElementById('text1').innerText=playername[playercount]
+                        document.getElementById('open').style.display='none'  
+                        document.getElementById('close').style.display='flex'
+                    }
+                    
+                }
+            })
+        })
+</script>
+</body>
+</html>
